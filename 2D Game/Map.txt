@@ -1,10 +1,10 @@
-Y                                                                                                            Y
-Y                    WWWWW                                                                                   Y
-Y                 WWWWWWWW                                                                                   Y
-Y         WWWWWWWWWWWWWWWWW   WWW                                                                            Y
-Y     WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW                                                                     Y
-XWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW              P                                         Y
+Y                                                                LLL                                         Y                                                              
+Y                    WWWWW                                      LLLLL                                        Y                                                              
+Y                 WWWWWWWW                                       LLL                                         Y                                                              
+Y         WWWWWWWWWWWWWWWWW   WWW                                 I                                          Y                                                              
+Y P   WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW                          I                                          Y                                                              
+XWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW             I                                          Y                                                              
 XWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW   WWWWWWWWWWWWWWWWXWW                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 XWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW         WWWWWWWWWWWWWWWWWXWWWWWWW         WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 XWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW WWW    WWWWWWWWWWWWWWWWWWXWWWWWWWWWWWW   WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ

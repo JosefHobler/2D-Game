@@ -3,7 +3,7 @@
 
 // Constructor
 Game::Game()
-    :x_coord(0), y_coord(0), screen_height(0), screen_width(0), game_over(false), jump_counter(0)
+    :x_coord(0), y_coord(0),first_entry(true), game_over(false), jump_counter(0)
 {
 	// Loading map from file
 	ifstream map("Map.txt");
@@ -11,36 +11,21 @@ Game::Game()
 	{
 		while (map.get(read_from_file))
 		{
-            if (read_from_file == 'X')
-            {
-                invisible_barriers.push_back(new InvisibleBarriers(x_coord, y_coord, 1));
-            }
-            if (read_from_file == 'Y')
-            {
-                invisible_barriers.push_back(new InvisibleBarriers(x_coord, y_coord, 0));
-            }
-            if (read_from_file == 'W')
-            {
-                stones.push_back(new Stone(x_coord, y_coord));
-            }
-            if (read_from_file == 'P')
-            {
-                player = new Player(x_coord, y_coord);
-            }
             if (read_from_file == '\n')
             {
-                y_coord++;
-                x_coord = 0;
+                map_storage.push_back(map_storage_helper);
+                map_storage_helper.clear();
+                continue;
             }
-            else
-            {
-                x_coord++;
-            }
-            screen_width = max(screen_width, x_coord);
-            screen_height = max(screen_height, y_coord + 1);
+            map_storage_helper.push_back(read_from_file);
         }
         map.close();
+        map_storage.push_back(map_storage_helper);
 	}
+    screen_height = map_storage.size();
+    screen_width = map_storage[0].size();
+    min_left_side = 0;
+    max_right_side = 25;
 }
 
 
@@ -56,6 +41,63 @@ Game::~Game()
     {
         delete it;
     }
+    for (auto it : trees)
+    {
+        delete it;
+    }
+    for (auto it : leaves)
+    {
+        delete it;
+    }
+}
+
+
+// Moving terrain as player moves
+void Game::MoveTerrain()
+{    
+    if (!first_entry)
+    {
+        min_left_side = (player->Get_x_player() - 25 > 0) ? player->Get_x_player() - 25 : 0;
+        max_right_side = (player->Get_x_player() + 25 < map_storage[0].size()) ? player->Get_x_player() + 25 : map_storage[0].size() - 1;
+    }
+    for (unsigned int y = 0; y < screen_height; y++)
+    {
+        for (int x = min_left_side; x < max_right_side; x++)
+        {
+            if (map_storage[y][x] == 'W')
+            {
+                stones.push_back(new Stone(x, y));
+            }
+            else if (map_storage[y][x] == 'Y')
+            {
+                invisible_barriers.push_back(new InvisibleBarriers(x, y, 0));
+            }
+            else if (map_storage[y][x] == 'X')
+            {
+                invisible_barriers.push_back(new InvisibleBarriers(x, y, 1));
+            }
+            else if (map_storage[y][x] == 'Z')
+            {
+                invisible_barriers.push_back(new InvisibleBarriers(x, y, 2));
+            }
+            else if (map_storage[y][x] == 'P')
+            {
+                if (first_entry)
+                {
+                    player = new Player(x, y);
+                }
+            }
+            else if (map_storage[y][x] == 'I')
+            {
+                trees.push_back(new Tree(x, y));
+            }
+            else if (map_storage[y][x] == 'L')
+            {
+                leaves.push_back(new Leaves(x, y));
+            }
+        }
+    }
+    first_entry = false;
 }
 
 
@@ -65,39 +107,63 @@ void Game::Show()
     system("cls");
     for (unsigned int y = 0; y < screen_height; y++)
     {
-        for (unsigned int x = 0; x < screen_width; x++)
+        for (unsigned int x = min_left_side; x < max_right_side; x++)
         {
             is_index_printed = false;
             // Checking for player
             if (player->Get_x_player() == x && player->Get_y_player() == y)
             {
-                cout << "P";
+                cout << "\x4F";
                 is_index_printed = true;
                 continue;
             }
             // Checking for invisible barriers
-            for (int i = 0; i < invisible_barriers.size(); i++)
+            for (unsigned int i = 0; i < invisible_barriers.size(); i++)
             {
                 if (!is_index_printed && invisible_barriers[i]->Get_x_inv_barrier() == x && invisible_barriers[i]->Get_y_inv_barrier() == y)
                 {
-                    if (invisible_barriers[i]->Get_type())
+                    if (invisible_barriers[i]->Get_type() == 1)
                     {
-                        cout << "O";
+                        cout << "\xDB";
+                    }
+                    else if (invisible_barriers[i]->Get_type() == 0)
+                    {
+                        cout << " ";
                     }
                     else
                     {
-                        cout << " ";
+                        cout << "\xDF";
                     }
                     is_index_printed = true;
                     break;
                 }
             }
             // Checking for stones
-            for (int i = 0; i < stones.size(); i++)
+            for (unsigned int i = 0; i < stones.size(); i++)
             {
                 if (!is_index_printed && (stones[i]->Get_x_stone() == x && stones[i]->Get_y_stone() == y))
                 {
-                    cout << "O";
+                    cout << "\xDB";
+                    is_index_printed = true;
+                    break;
+                }
+            }
+            // Checking for trunks
+            for (unsigned int i = 0; i < trees.size(); i++)
+            {
+                if (!is_index_printed && (trees[i]->Get_x_tree() == x && trees[i]->Get_y_tree() == y))
+                {
+                    cout << "\xBA";
+                    is_index_printed = true;
+                    break;
+                }
+            }
+            // Checking for leaves
+            for (unsigned int i = 0; i < leaves.size(); i++)
+            {
+                if (!is_index_printed && (leaves[i]->Get_x_tree() == x && leaves[i]->Get_y_tree() == y))
+                {
+                    cout << "\xB0";
                     is_index_printed = true;
                     break;
                 }
@@ -118,7 +184,7 @@ void Game::Logic()
 {
     left_move = true, right_move = true, gravity = true, up = true;
     // Stop movement (Invisible barriers)
-    for (int i = 0; i < invisible_barriers.size(); i++)
+    for (unsigned int i = 0; i < invisible_barriers.size(); i++)
     {
         if (invisible_barriers[i]->Get_x_inv_barrier() + 1 == player->Get_x_player() && invisible_barriers[i]->Get_y_inv_barrier() == player->Get_y_player())
         {
@@ -130,7 +196,7 @@ void Game::Logic()
         }
     }
     // Stop movement (Stones)
-    for (int i = 0; i < stones.size(); i++)
+    for (unsigned int i = 0; i < stones.size(); i++)
     {
         if (stones[i]->Get_x_stone() + 1 == player->Get_x_player() && stones[i]->Get_y_stone() == player->Get_y_player())
         {
@@ -146,14 +212,14 @@ void Game::Logic()
         }
     }
     // Gravity
-    for (int i = 0; i < stones.size(); i++)
+    for (unsigned int i = 0; i < stones.size(); i++)
     {  
         if (stones[i]->Get_x_stone() == player->Get_x_player() && stones[i]->Get_y_stone() - 1 == player->Get_y_player())
         {
             gravity = false;
         }
     }
-    for (int i = 0; i < invisible_barriers.size(); i++)
+    for (unsigned int i = 0; i < invisible_barriers.size(); i++)
     {
         if (invisible_barriers[i]->Get_x_inv_barrier() == player->Get_x_player() && invisible_barriers[i]->Get_y_inv_barrier() - 1 == player->Get_y_player())
         {
@@ -184,8 +250,13 @@ void Game::Run()
     while (!game_over)
     {
         Sleep(1000/60);
+        MoveTerrain();
         Logic();
         Show();
+        stones.clear();
+        invisible_barriers.clear();
+        trees.clear();
+        leaves.clear();
         player->Move(right_move, left_move, gravity);
     }
 }

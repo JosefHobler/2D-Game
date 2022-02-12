@@ -2,7 +2,7 @@
 
 
 // Constructor
-InvisibleBarriers::InvisibleBarriers(int x, int y, bool type)
+InvisibleBarriers::InvisibleBarriers(int x, int y, int type)
 	:x_inv_barrier(x), y_inv_barrier(y), type(type) {}
 
 
@@ -19,7 +19,7 @@ int InvisibleBarriers::Get_y_inv_barrier()
 }
 
 
-bool InvisibleBarriers::Get_type()
+int InvisibleBarriers::Get_type()
 {
 	return type;
 }
