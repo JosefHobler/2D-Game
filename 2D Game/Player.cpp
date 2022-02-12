@@ -19,16 +19,22 @@ void Player::Move(bool right_move, bool left_move, bool gravity)
 	}
 	if (!gravity)
 	{
-		
 		jump = (0x8000 & GetAsyncKeyState((unsigned char)(VK_SPACE))) != 0 ? true : false;
 	}
 }
 
 
-// Decrementing player by 1
+// Decrementing player y by 1
 void Player::Increment_y_player()
 {
 	y_player++;
+}
+
+
+// Decrementing player y by 1
+void Player::Decrement_y_player()
+{
+	y_player--;
 }
 
 
@@ -48,4 +54,10 @@ int Player::Get_y_player()
 bool Player::Get_jump()
 {
 	return jump;
+}
+
+// Setters
+void Player::Modify_jump(bool value)
+{
+	jump = value;
 }

@@ -18,6 +18,8 @@ private:
 	bool game_over;
 	bool left_move, right_move;
 	bool gravity;
+	bool up;
+	int jump_counter;
 public:
 	Game();
 	~Game();

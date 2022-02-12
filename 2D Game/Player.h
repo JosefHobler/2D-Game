@@ -13,5 +13,7 @@ public:
 	int Get_x_player();
 	int Get_y_player();
 	bool Get_jump();
+	void Modify_jump(bool value);
 	void Increment_y_player();
+	void Decrement_y_player();
 };
