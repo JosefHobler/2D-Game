@@ -10,19 +10,14 @@ class Game
 {
 private:
 	int screen_width, screen_height;
-	vector<InvisibleBarriers*> invisible_barriers;
+	vector<InvisibleBarriers*> barriers;
 	vector<Stone*> stones;
 	vector<Tree*> trees;
-	vector<Leaves*> leaves;
-	Player* player;
+	vector<Player*> player;
 	int x_coord, y_coord;
 	char read_from_file;
 	bool is_index_printed;
 	bool game_over;
-	bool left_move, right_move;
-	bool gravity;
-	bool up;
-	int jump_counter;
 	vector<vector<char>> map_storage;
 	vector<char> map_storage_helper;
 	int min_left_side, max_right_side;
