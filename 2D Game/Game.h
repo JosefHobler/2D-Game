@@ -21,6 +21,7 @@ private:
 	vector<vector<char>> map_storage;
 	vector<char> map_storage_helper;
 	int min_left_side, max_right_side;
+	int min_up, max_down;
 	bool first_entry;
 public:
 	Game();

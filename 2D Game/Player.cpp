@@ -9,7 +9,7 @@ Player::Player(int x, int y)
 	:x_player(x), y_player(y), jump(false), jump_counter(0) {}
 
 Zombie::Zombie(int x, int y)
-	:Player(x,y) {}
+	:Player(x,y), focus(false) {}
 
 
 // Player's movement
@@ -31,7 +31,42 @@ void Player::Move()
 
 void Zombie::Move()
 {
+	if (left_move)
+	{
+		if (focus)
+		{
 
+		}
+		else
+		{
+			movement = rand() % 50;
+			x_player -= (movement == 0) ? 1 : 0;
+		}
+	}
+	if (right_move)
+	{
+		if (focus)
+		{
+
+		}
+		else
+		{
+			movement = rand() % 50;
+			x_player += (movement == 0) ? 1 : 0;
+		}
+	}
+	if (!gravity)
+	{
+		if (focus)
+		{
+
+		}
+		else
+		{
+			movement = rand() % 100;
+			jump = (movement == 0) ? true : false;
+		}
+	}
 }
 
 
@@ -62,6 +97,7 @@ void Player::Decrement_y_player()
 
 
 // Getters
+
 int Player::Get_x_player()
 {
 	return x_player;

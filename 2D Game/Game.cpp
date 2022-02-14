@@ -27,6 +27,8 @@ Game::Game()
     screen_width = map_storage[0].size();
     min_left_side = 0;
     max_right_side = 25;
+    max_down = 12;
+    min_up = 0;
 }
 
 
@@ -57,12 +59,30 @@ void Game::MoveTerrain()
 {    
     if (!first_entry)
     {
+        min_up = (player[0]->Get_y_player() - 8 > 0) ? player[0]->Get_y_player() - 8 : 0;
+        max_down = ((player[0]->Get_y_player() + 8) < (int)map_storage.size()) ? (player[0]->Get_y_player() + 8) : (int)map_storage.size();
         min_left_side = (player[0]->Get_x_player() - 25 > 0) ? player[0]->Get_x_player() - 25 : 0;
-        max_right_side = (player[0]->Get_x_player() + 25 < map_storage[0].size()) ? player[0]->Get_x_player() + 25 : map_storage[0].size() - 1;
+        max_right_side = ((player[0]->Get_x_player() + 25) < (int)map_storage[0].size()) ? (player[0]->Get_x_player() + 25) : (int)map_storage[0].size();
+        if (min_up == 0)
+        {
+            max_down += 8 - player[0]->Get_y_player();
+        }
+        if (max_down == (map_storage.size()))
+        {
+            min_up += map_storage.size() - player[0]->Get_y_player() - 8;
+        }
+        if (min_left_side == 0)
+        {
+            max_right_side += 25 - player[0]->Get_x_player();
+        }
+        if (max_right_side == map_storage[0].size())
+        {
+            min_left_side += map_storage[0].size() - player[0]->Get_x_player() - 25;
+        }
     }
-    for (unsigned int y = 0; y < screen_height; y++)
+    for (unsigned int y = min_up; y < max_down; y++)
     {
-        for (int x = min_left_side; x < max_right_side; x++)
+        for (unsigned int x = min_left_side; x < max_right_side; x++)
         {
             if (map_storage[y][x] == 'S')
             {
@@ -91,6 +111,13 @@ void Game::MoveTerrain()
                     player[0] = (new Player(x, y));
                 }
             }
+            else if (map_storage[y][x] == 'Z')
+            {
+                if (first_entry)
+                {
+                    player.push_back(new Zombie(x, y));
+                }
+            }
             else if (map_storage[y][x] == 'T')
             {
                 trees.push_back(new Trunk(x, y));
@@ -98,10 +125,6 @@ void Game::MoveTerrain()
             else if (map_storage[y][x] == 'L')
             {
                 trees.push_back(new Leaves(x, y));
-            }
-            else if (map_storage[y][x] == 'Z')
-            {
-                player.push_back(new Zombie(x, y));
             }
         }
     }
@@ -113,7 +136,7 @@ void Game::MoveTerrain()
 void Game::Show()
 {
     system("cls");
-    for (unsigned int y = 0; y < screen_height; y++)
+    for (unsigned int y = min_up; y < max_down; y++)
     {
         for (unsigned int x = min_left_side; x < max_right_side; x++)
         {
@@ -233,7 +256,7 @@ void Game::Logic()
         }
         if (player[j]->Get_jump_counter() > 0)
         {
-            player[j]->Modify_jump_counter(player[j]->Get_jump_counter()- 1);
+            player[j]->Modify_jump_counter(player[j]->Get_jump_counter() - 1);
             if (player[j]->Get_up())
             {
                 player[j]->Decrement_y_player();
