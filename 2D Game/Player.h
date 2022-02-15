@@ -37,8 +37,11 @@ class Zombie : public Player
 private:
 	bool focus;
 	bool movement;
+	friend class  Zombie;
 public:
 	Zombie(int x, int y);
 	void ToConsole();
 	void Move();
+	void Modify_focus(bool value);
+	bool Get_focus();
 };

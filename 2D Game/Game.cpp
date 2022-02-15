@@ -23,11 +23,9 @@ Game::Game()
         map.close();
         map_storage.push_back(map_storage_helper);
 	}
-    screen_height = map_storage.size();
-    screen_width = map_storage[0].size();
     min_left_side = 0;
-    max_right_side = 25;
-    max_down = 12;
+    max_right_side = map_storage[0].size();
+    max_down = map_storage.size();
     min_up = 0;
 }
 
@@ -80,9 +78,9 @@ void Game::MoveTerrain()
             min_left_side += map_storage[0].size() - player[0]->Get_x_player() - 25;
         }
     }
-    for (unsigned int y = min_up; y < max_down; y++)
+    for (unsigned int y = 0; y < map_storage.size(); y++)
     {
-        for (unsigned int x = min_left_side; x < max_right_side; x++)
+        for (unsigned int x = 0; x < map_storage[0].size(); x++)
         {
             if (map_storage[y][x] == 'S')
             {
@@ -129,6 +127,10 @@ void Game::MoveTerrain()
         }
     }
     first_entry = false;
+    if (min_left_side == 0 && min_up == 0 && max_right_side == map_storage[0].size() && max_down == map_storage.size())
+    {
+        MoveTerrain();
+    }
 }
 
 
@@ -136,6 +138,7 @@ void Game::MoveTerrain()
 void Game::Show()
 {
     system("cls");
+    cout << player[1]->Get_x_player() << " " << player[1]->Get_y_player();
     for (unsigned int y = min_up; y < max_down; y++)
     {
         for (unsigned int x = min_left_side; x < max_right_side; x++)
@@ -261,6 +264,11 @@ void Game::Logic()
             {
                 player[j]->Decrement_y_player();
             }
+        }
+        // Zombie focus
+        if (player[0]->Get_x_player() + 10 > player[j]->Get_x_player() && player[0]->Get_x_player() - 10 < player[j]->Get_x_player() && j != 0)
+        {
+            
         }
     }
 }

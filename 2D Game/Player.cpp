@@ -97,6 +97,10 @@ void Player::Decrement_y_player()
 
 
 // Getters
+bool Zombie::Get_focus()
+{
+	return focus;
+}
 
 int Player::Get_x_player()
 {
@@ -130,6 +134,11 @@ int Player::Get_jump_counter()
 
 
 // Setters
+void Zombie::Modify_focus(bool value)
+{
+	focus = value;
+}
+
 void Player::Modify_jump(bool value)
 {
 	jump = value;
