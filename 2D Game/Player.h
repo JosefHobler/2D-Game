@@ -9,6 +9,7 @@ private:
 	bool jump;
 	bool right_move, left_move, gravity, up;
 	int jump_counter;
+	bool zombie_left, zombie_right;
 	friend class Zombie;
 public:
 	Player();
@@ -29,6 +30,10 @@ public:
 	void Increment_y_player();
 	void Decrement_y_player();
 	virtual void ToConsole();
+	virtual void Modify_focus(bool value);
+	virtual bool Get_focus();
+	void Modify_zombie_left(bool value);
+	void Modify_zombie_right(bool value);
 };
 
 
@@ -37,7 +42,6 @@ class Zombie : public Player
 private:
 	bool focus;
 	bool movement;
-	friend class  Zombie;
 public:
 	Zombie(int x, int y);
 	void ToConsole();

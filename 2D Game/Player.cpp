@@ -33,39 +33,28 @@ void Zombie::Move()
 {
 	if (left_move)
 	{
-		if (focus)
+		if (focus && zombie_left)
 		{
-
+			x_player -= 1;
+			return;
 		}
-		else
-		{
-			movement = rand() % 50;
-			x_player -= (movement == 0) ? 1 : 0;
-		}
+		movement = rand() % 50;
+		x_player -= (movement == 0) ? 1 : 0;
 	}
 	if (right_move)
 	{
-		if (focus)
+		if (focus && zombie_right)
 		{
-
+			x_player += 1;
+			return;
 		}
-		else
-		{
-			movement = rand() % 50;
-			x_player += (movement == 0) ? 1 : 0;
-		}
+		movement = rand() % 50;
+		x_player += (movement == 0) ? 1 : 0;
 	}
 	if (!gravity)
 	{
-		if (focus)
-		{
-
-		}
-		else
-		{
-			movement = rand() % 100;
-			jump = (movement == 0) ? true : false;
-		}
+		movement = rand() % 100;
+		jump = (movement == 0) ? true : false;
 	}
 }
 
@@ -168,3 +157,22 @@ void Player::Modify_jump_counter(int value)
 {
 	jump_counter = value;
 }
+
+void Player::Modify_zombie_left(bool value)
+{
+	zombie_left = value;
+}
+
+void Player::Modify_zombie_right(bool value)
+{
+	zombie_right = value;
+}
+
+
+// Nothing
+bool Player::Get_focus() 
+{
+	return false;
+}
+
+void Player::Modify_focus(bool value) {}
