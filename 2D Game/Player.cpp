@@ -9,7 +9,7 @@ Player::Player(int x, int y)
 	:x_player(x), y_player(y), jump(false), jump_counter(0) {}
 
 Zombie::Zombie(int x, int y)
-	:Player(x,y), focus(false) {}
+	:Player(x,y), focus(false), count_move(3) {}
 
 
 // Player's movement
@@ -35,7 +35,15 @@ void Zombie::Move()
 	{
 		if (focus && zombie_left)
 		{
-			x_player -= 1;
+			if (count_move == 0)
+			{
+				count_move = 3;
+				x_player -= 1;
+			}
+			else
+			{
+				count_move--;
+			}
 			return;
 		}
 		movement = rand() % 50;
@@ -45,7 +53,15 @@ void Zombie::Move()
 	{
 		if (focus && zombie_right)
 		{
-			x_player += 1;
+			if (count_move == 0)
+			{
+				count_move = 3;
+				x_player += 1;
+			}
+			else
+			{
+				count_move--;
+			}
 			return;
 		}
 		movement = rand() % 50;
@@ -158,21 +174,12 @@ void Player::Modify_jump_counter(int value)
 	jump_counter = value;
 }
 
-void Player::Modify_zombie_left(bool value)
+void Zombie::Modify_zombie_left(bool value)
 {
 	zombie_left = value;
 }
 
-void Player::Modify_zombie_right(bool value)
+void Zombie::Modify_zombie_right(bool value)
 {
 	zombie_right = value;
 }
-
-
-// Nothing
-bool Player::Get_focus() 
-{
-	return false;
-}
-
-void Player::Modify_focus(bool value) {}

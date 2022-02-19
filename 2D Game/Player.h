@@ -30,16 +30,13 @@ public:
 	void Increment_y_player();
 	void Decrement_y_player();
 	virtual void ToConsole();
-	virtual void Modify_focus(bool value);
-	virtual bool Get_focus();
-	void Modify_zombie_left(bool value);
-	void Modify_zombie_right(bool value);
 };
 
 
 class Zombie : public Player
 {
 private:
+	int count_move;
 	bool focus;
 	bool movement;
 public:
@@ -48,4 +45,6 @@ public:
 	void Move();
 	void Modify_focus(bool value);
 	bool Get_focus();
+	void Modify_zombie_left(bool value);
+	void Modify_zombie_right(bool value);
 };

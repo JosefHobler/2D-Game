@@ -138,7 +138,6 @@ void Game::MoveTerrain()
 void Game::Show()
 {
     system("cls");
-    cout << player[1]->Get_focus();
     for (unsigned int y = min_up; y < max_down; y++)
     {
         for (unsigned int x = min_left_side; x < max_right_side; x++)
@@ -200,9 +199,13 @@ void Game::Logic()
 {
     for (unsigned int j = 0; j < player.size(); j++)
     {
-        player[j]->Modify_focus(false);
-        player[j]->Modify_zombie_right(false);
-        player[j]->Modify_zombie_left(false);
+        if (dynamic_cast<Zombie*>(player[j]))
+        {
+            Zombie* helper = reinterpret_cast<Zombie*>(player[j]);
+            helper->Modify_focus(false);
+            helper->Modify_zombie_right(false);
+            helper->Modify_zombie_left(false);
+        }
         player[j]->Modify_left_move(true);
         player[j]->Modify_right_move(true);
         player[j]->Modify_gravity(true);
@@ -269,26 +272,28 @@ void Game::Logic()
             }
         }
         // Zombie focus
-        if (j != 0 && (player[0]->Get_x_player() + 10 > player[j]->Get_x_player() && player[0]->Get_x_player() - 10 < player[j]->Get_x_player())
-            && (player[0]->Get_y_player() + 2 > player[j]->Get_y_player() && player[0]->Get_y_player() - 2 < player[j]->Get_y_player()))
+        if (dynamic_cast<Zombie*>(player[j]))
         {
-            player[j]->Modify_focus(true);
-        }
-        if (player[j]->Get_focus())
-        {
-            if (j != 0 && player[0]->Get_x_player() == player[j]->Get_x_player())
+            Zombie* helper = reinterpret_cast<Zombie*>(player[j]);
+            if ((player[0]->Get_x_player() + 10 > player[j]->Get_x_player() && player[0]->Get_x_player() - 10 < player[j]->Get_x_player())
+                && (player[0]->Get_y_player() + 2 > player[j]->Get_y_player() && player[0]->Get_y_player() - 2 < player[j]->Get_y_player()))
             {
-                player[j]->Modify_focus(false);
-                player[j]->Modify_zombie_right(false);
-                player[j]->Modify_zombie_left(false);
+                helper->Modify_focus(true);
             }
-            if (j != 0 && player[0]->Get_x_player() < player[j]->Get_y_player())
+            if (helper->Get_focus())
             {
-                player[j]->Modify_zombie_left(true);
-            }
-            if (j != 0 && player[0]->Get_x_player() > player[j]->Get_y_player())
-            {
-                player[j]->Modify_zombie_right(true);
+                if (player[0]->Get_x_player() == player[j]->Get_x_player() && player[0]->Get_y_player() == player[j]->Get_y_player())
+                {
+                    game_over = true;
+                }
+                if (player[0]->Get_x_player() < player[j]->Get_y_player())
+                {
+                    helper->Modify_zombie_left(true);
+                }
+                if (player[0]->Get_x_player() > player[j]->Get_y_player())
+                {
+                    helper->Modify_zombie_right(true);
+                }
             }
         }
     }
