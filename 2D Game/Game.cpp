@@ -150,7 +150,31 @@ void Game::Show()
                 {
                     player[i]->ToConsole();
                     is_index_printed = true;
-                    continue;
+                    break;
+                }
+            }
+            if (player[0]->Get_attack())
+            {
+                for (int i = 0; i < player[0]->Get_weapon_range(); i++)
+                {
+                    if (player[0]->Get_head())
+                    {
+                        if (!is_index_printed && player[0]->Get_x_player() - i == x && player[0]->Get_y_player() == y)
+                        {
+                            player[0]->ToConsole();
+                            is_index_printed = true;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (!is_index_printed && player[0]->Get_x_player() + i == x && player[0]->Get_y_player() == y)
+                        {
+                            player[0]->Call_weapon();
+                            is_index_printed = true;
+                            break;
+                        }
+                    }
                 }
             }
             // Checking for invisible barriers
@@ -257,6 +281,38 @@ void Game::Logic()
                 player[j]->Modify_up(false);
             }
         }
+        // Zombie focus
+        if (dynamic_cast<Zombie*>(player[j]))
+        {
+            Zombie* helper = reinterpret_cast<Zombie*>(player[j]);
+            if ((player[0]->Get_x_player() > player[j]->Get_x_player() - 20 && player[0]->Get_x_player() < 20 + player[j]->Get_x_player())
+                && (player[0]->Get_y_player() > player[j]->Get_y_player() - 10 && player[0]->Get_y_player() < 10 + player[j]->Get_y_player()))
+            {
+                helper->Modify_focus(true);
+            }
+            if (helper->Get_focus())
+            {
+                if (player[0]->Get_x_player() == player[j]->Get_x_player() && player[0]->Get_y_player() == player[j]->Get_y_player())
+                {
+                    game_over = true;
+                }
+                if (player[0]->Get_x_player() < player[j]->Get_x_player())
+                {
+                    helper->Modify_zombie_left(true);
+                }
+                if (player[0]->Get_x_player() > player[j]->Get_x_player())
+                {
+                    helper->Modify_zombie_right(true);
+                }
+                if (!player[j]->Get_gravity())
+                {
+                    if (!player[j]->Get_left_move() && helper->Get_zombie_left() || !player[j]->Get_right_move() && helper->Get_zombie_right())
+                    {
+                        player[j]->Modify_jump(true);
+                    }
+                }
+            }
+        }
         // Jump
         if (player[j]->Get_jump())
         {
@@ -269,31 +325,6 @@ void Game::Logic()
             if (player[j]->Get_up())
             {
                 player[j]->Decrement_y_player();
-            }
-        }
-        // Zombie focus
-        if (dynamic_cast<Zombie*>(player[j]))
-        {
-            Zombie* helper = reinterpret_cast<Zombie*>(player[j]);
-            if ((player[0]->Get_x_player() + 10 > player[j]->Get_x_player() && player[0]->Get_x_player() - 10 < player[j]->Get_x_player())
-                && (player[0]->Get_y_player() + 2 > player[j]->Get_y_player() && player[0]->Get_y_player() - 2 < player[j]->Get_y_player()))
-            {
-                helper->Modify_focus(true);
-            }
-            if (helper->Get_focus())
-            {
-                if (player[0]->Get_x_player() == player[j]->Get_x_player() && player[0]->Get_y_player() == player[j]->Get_y_player())
-                {
-                    game_over = true;
-                }
-                if (player[0]->Get_x_player() < player[j]->Get_y_player())
-                {
-                    helper->Modify_zombie_left(true);
-                }
-                if (player[0]->Get_x_player() > player[j]->Get_y_player())
-                {
-                    helper->Modify_zombie_right(true);
-                }
             }
         }
     }
